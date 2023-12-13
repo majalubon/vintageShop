@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Maja's Vintage</title>
+    <link rel="stylesheet"  type="text/css" href="main.css" />
+  </head>
+  <body>
+    <h1>Maja's Vintage</h1>
+    <div class="topnav">
+      <a href="/">HOME</a>
+      <a href="about">About Maja's Vintage</a>
+      <a href="list">Buy</a>
+      <a href="additem">Sell</a>
+      <a href="bargainitems">Best Deals</a>
+      <a href="listusers"> A list of our users</a>
+      <% if (loggedIn) { %>
+        <a href="/logout">Logout</a>
+      <% } else { %>
+        <a href="/login">Login</a>
+      <% } %>
+      <!-- Search Bar-->
+      <div class="dropdown">
+        <button class="dropbtn">
+          SEARCH
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+          <form action="/search-result" method="get">
+            <input type="text" name="keyword" placeholder="Search..." />
+            <button type="submit">Go</button>
+          </form>
+        </div>
+      </div>
+      <a href="basket">Basket</a>
+  </div>
+  <h2>Your Basket</h2>
+<ul>
+  <% let total = 0; %>
+  <% for (let i = 0; i < userBasketItems.length; i++) { %>
+    <li>
+      <h3><%= userBasketItems[i].name %></h3>
+      <p><%= userBasketItems[i].brand %></p>
+      <p>£<%= userBasketItems[i].price %></p>
+      <% total += userBasketItems[i].price; %>
+      <% if (userBasketItems[i].image) { %>
+        <img src="<%= userBasketItems[i].image %>" alt="<%= userBasketItems[i].name %> Image" width="200">
+      <% } else { %>
+        <p>No image available</p>
+      <% } %>
+      <!-- Button to remove item from the basket -->
+      <form method="POST" action="/removeFromBasket">
+        <input type="hidden" name="index" value="<%= i %>">
+        <button type="submit">Remove from Basket</button>
+      </form>
+    </li>
+    <br/>
+  <% } %>
+</ul>
+<p>Total: £<%= total.toFixed(2) %></p> <!-- Display the total price -->
+<% if (loggedIn) { %>
+  <!-- Payment button visible only when logged in -->
+  <form method="POST" action="/makePayment">
+    <button type="submit">Make Payment</button>
+  </form>
+<% } else { %>
+  <!-- Message to prompt login when not logged in -->
+  <p>Please <a href="/login">login</a> to make a payment.</p>
+<% } %>
+
+  </body>
+</html>

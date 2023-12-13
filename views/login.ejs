@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+  <head>
+    <title><%=shopName%></title>
+    <link rel="stylesheet"  type="text/css" href="main.css" />
+  </head>
+  <body>
+    <h1><%=shopName%></h1>
+    <div class="topnav">
+      <a href="/">HOME</a>
+      <a href="about">About <%=shopName%></a>
+      <a href="list">Buy</a>
+      <a href="additem">Sell</a>
+      <a href="bargainitems">Best Deals</a>
+      <a href="listusers"> A list of our users</a>
+      <% if (loggedIn) { %>
+        <a href="/logout">Logout</a>
+      <% } else { %>
+        <a href="/login">Login</a>
+      <% } %>
+      <!-- Search Bar-->
+      <div class="dropdown">
+        <button class="dropbtn">
+          SEARCH
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+          <form action="/search-result" method="get">
+            <input type="text" name="keyword" placeholder="Search..." />
+            <button type="submit">Go</button>
+          </form>
+        </div>
+      </div>
+      <a href="basket">Basket</a>
+  </div>
+  <div class="loginbg">
+    <div class="login-box">
+    <h2>Login</h2>
+    <form method="POST" action="/loggedin">
+      <div class="container"></div>
+      <label for="username"><b>Username:</b></label>
+      <input id="username" type="text" name="username" value="username" required/>
+
+      <label for="passowrd"><b>Password:</b></label>
+        <input id="password" type="text" name="password" value="password" required/>
+        
+        <button type="submit" value="Register" class="loginbtn">Login</button>
+        <div class="container signin">
+          <p>If you don't have an account? <a href="/register">Sign Up</a>.</p>
+      </form>
+  </body>
+</html>

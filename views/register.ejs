@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+  <head>
+    <title><%=shopName%></title>
+    <link rel="stylesheet"  type="text/css" href="main.css" />
+  </head>
+  <body>
+    <h1><%=shopName%></h1>
+    <div class="topnav">
+      <a href="/">HOME</a>
+      <a href="about">About <%=shopName%></a>
+      <a href="list">Buy</a>
+      <a href="additem">Sell</a>
+      <a href="bargainitems.ejs">Best Deals</a>
+      <a href="listusers"> A list of our users</a>
+      <% if (loggedIn) { %>
+        <a href="/logout">Logout</a>
+      <% } else { %>
+        <a href="/login">Login</a>
+      <% } %>
+      <!-- Search Bar-->
+      <div class="dropdown">
+        <button class="dropbtn">
+          SEARCH
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+          <form action="/search-result" method="get">
+            <input type="text" name="keyword" placeholder="Search..." />
+            <button type="submit">Go</button>
+          </form>
+        </div>
+      </div>
+      <a href="basket">Basket</a>
+  </div>
+  <div class="signbg">
+    <div class="signup-box">
+    <h2>Sign Up</h2>
+    <form method="POST" action="/registered">
+      <div class="container">
+        <p>Please fill in this form to create an account</p>
+        <hr />
+
+        <label for="first"><b>First Name:</b></label>
+        <input id="first" type="text" name="first" placeholder="" required/>
+        <br />
+
+        <label for="last"><b>Last Name:</b></label>
+        <input id="last" type="text" name="last" placeholder="" required/>
+        <br />
+
+        <label for="email"><b>Email Address</Address>:</b></label>
+        <input id="email" type="text" name="email" placeholder="" pattern="^[a-zA-Z0-9._]+@[a-zA-Z.]+$" required />
+        <br /> 
+
+        <label for="username"><b>Username:</b></label>
+        <input id="username" type="text" name="username" placeholder="" required/>
+        <br />
+
+        <label for="password"><b>Password:</b></label>
+        <input id="password" type="text" name="password" placeholder="" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" minlength="8" required />
+        <p1>The password should include 8 characters, an uppercase letter and a number</p1>
+        <br />
+
+        <button type="submit" value="Register" class="registerbtn">Sign Up</button>
+      </div>
+      <div class="container signin">
+      <p>Already have an account? <a href="/login">Log in</a>.</p>
+      </div>
+      </form>
+    </div>
+  </div>
+  </body>
+</html>

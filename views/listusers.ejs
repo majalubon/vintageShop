@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+  <head>
+    <title><%=shopName%></title>
+    <link rel="stylesheet"  type="text/css" href="main.css" />
+  </head>
+  <body>
+    <h1><%=shopName%></h1>
+    <div class="topnav">
+      <a href="/">HOME</a>
+      <a href="about">About <%=shopName%></a>
+      <a href="list">Buy</a>
+      <a href="additem">Sell</a>
+      <a href="bargainitems">Best Deals</a>
+      <a href="listusers"> A list of our users</a>
+      <% if (loggedIn) { %>
+        <a href="/logout">Logout</a>
+      <% } else { %>
+        <a href="/login">Login</a>
+      <% } %>
+      <!-- Search Bar-->
+      <div class="dropdown">
+        <button class="dropbtn">
+          SEARCH
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+          <form action="/search-result" method="get">
+            <input type="text" name="keyword" placeholder="Search..." />
+            <button type="submit">Go</button>
+          </form>
+        </div>
+      </div>
+      <a href="basket">Basket</a>
+  </div>
+    <h2>List Users<%=shopName%></h2>
+    <p>List of our users:</p>
+    <ul>
+        <% for(let i =0; i< users.length; i++){%>
+        <li><%=users[i].usernamr%>, <%=users[i].first%>, <%=users[i].last%>, <%=users[i].email%></li>
+        <br/>
+        <%}%>
+    </ul>
+  </body>
+</html>

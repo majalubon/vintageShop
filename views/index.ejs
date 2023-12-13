@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Maja's Vinatge</title>
+    <link rel="stylesheet"  type="text/css" href="main.css" />
+  </head>
+  <body>
+    <h1>Maja's Vintage</h1>
+    <div class="topnav">
+      <a href="/">HOME</a>
+      <a href="about">About Maja's Vintage</a>
+      <a href="list">Buy</a>
+      <a href="additem">Sell</a>
+      <a href="bargainitems">Best Deals</a>
+      <a href="listusers"> A list of our users</a>
+      <% if (loggedIn) { %>
+        <a href="/logout">Logout</a>
+      <% } else { %>
+        <a href="/login">Login</a>
+      <% } %>
+      <!-- Search Bar-->
+      <div class="dropdown">
+        <button class="dropbtn">
+          SEARCH
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+          <form action="/search-result" method="get">
+            <input type="text" name="keyword" placeholder="Search..." />
+            <button type="submit">Go</button>
+          </form>
+        </div>
+      </div>
+      <a href="basket">Basket</a>
+  </div>
+  <h2>Welcome to Maja's Vinatge we sell your vintage clothes</h2>
+  <h3>click below on Buy to view some nice pieces and click below on Sell to sell your vintage clothes</h3>
+  <div class="button-container">
+    <button class="buy-button" onclick="location.href='/list'">Buy</button>
+    <button class="sell-button" onclick="location.href='/additem'">Sell</button>
+  </div>
+
+
+  </body>
+</html>
