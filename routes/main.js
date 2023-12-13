@@ -16,11 +16,9 @@ const imageFilter = function (req, file, cb) {
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        // Specify the directory where you want to save the images
         cb(null, 'public/images');
     },
     filename: function (req, file, cb) {
-        // Use a custom filename (e.g., timestamp + original filename)
         cb(null, Date.now() + path.extname(file.originalname));
     }
 });
@@ -33,10 +31,8 @@ module.exports = function(app, shopData) {
 
     function requireLogin(req, res, next) {
         if (req.session.userId) {
-            // User is logged in, proceed to the next middleware or route
             next();
         } else {
-            // User is not logged in, redirect to the login page
             res.redirect('/login');
         }
     }
@@ -46,9 +42,7 @@ module.exports = function(app, shopData) {
         saveUninitialized: true
       }));
 
-    // Handle our routes
     app.get('/', function(req, res) {
-        // Include loggedIn in the shopData object
         const shopDataWithLoggedIn = { ...shopData, loggedIn: req.session.loggedIn };
     
         res.render('index.ejs', shopDataWithLoggedIn);
@@ -83,7 +77,6 @@ module.exports = function(app, shopData) {
             hashPassword=hashedPassword
             //console.log(hashPassword)
             let sqlquery = "INSERT INTO users (username, first, last, email, hashedPassword) VALUES (?,?,?,?,?)";
-            // execute sql query
             let newrecord = [req.body.username, req.body.first, req.body.last, req.body.email, hashPassword];
             db.query(sqlquery, newrecord, (err, result) => {
                 if (err) {
@@ -133,7 +126,6 @@ module.exports = function(app, shopData) {
                 // Compare the user's password with the hashed password from the database
                 bcrypt.compare(password, hashedPassword, function (err, result) {
                     if (err) {
-                        // Log the error details
                         console.error('Error comparing passwords:', err);
                         res.status(500).send('An error occurred while comparing passwords.');
                     } else if (result === true) {
@@ -197,12 +189,10 @@ module.exports = function(app, shopData) {
         res.render('additem.ejs', shopDataWithLoggedIn);
     });                                                      
     app.post('/itemadded', upload.single('image'), function (req, res) {
-        // saving data in database
         const imagePath = req.file ? req.file.path.replace(/\\/g, '/').replace('public/', '') : null;
-        const userId = req.session.userId; // Assuming you have the user ID in the session
+        const userId = req.session.userId; 
     
         let sqlquery = "INSERT INTO items (name, brand, price, image_path, UserId) VALUES (?,?,?,?,?)";
-        // execute sql query
         let newrecord = [req.body.name, req.body.brand, req.body.price, imagePath, userId];
     
         db.query(sqlquery, newrecord, (err, result) => {
@@ -235,9 +225,7 @@ module.exports = function(app, shopData) {
     });
     
     app.get('/search-result', function (req, res) {
-        // saving data in database
         let sqlquery = `SELECT * FROM items WHERE name LIKE "%${req.query.keyword}%"`;
-        // execute sql query
         db.query(sqlquery, (err, result) => {
             if (err) {
                 res.redirect('./');
@@ -297,7 +285,7 @@ module.exports = function(app, shopData) {
         const loggedInUserId = req.session.userId;
     
         if (loggedInUserId) {
-            // Process the payment (you may integrate with a payment gateway here)
+
     
             // Remove items from the database for the logged-in user only
             const sqlquery = 'DELETE FROM items WHERE addedByUserId = ?';
@@ -307,9 +295,8 @@ module.exports = function(app, shopData) {
                     res.status(500).send('An error occurred while processing the payment.');
                 } else {
                     // Thank the user for the purchase
-                    res.send('Thank you for your purchase!');
-    
-                    // Optionally, you might want to clear the selectedItems array or perform other actions
+                    res.send('Thank you for your purchase! <a href="/">Return to the home page</a>');
+          
                     selectedItems = [];
                 }
             });
@@ -319,7 +306,6 @@ module.exports = function(app, shopData) {
         }
     });
     app.get('/logout', function (req, res) {
-        // Clear the session variables to log out the user
         req.session.destroy(function(err) {
             if (err) {
                 console.error('Error logging out:', err);

@@ -14,25 +14,28 @@ DROP TABLE IF EXISTS items;
 DROP TABLE IF EXISTS users;
 
 
-CREATE TABLE users (
-  userID AUTO_INCREMENT PRIMARY KEY;
-  username VARCHAR(20) NOT NULL,
-  first VARCHAR(20) NOT NULL,
-  last VARCHAR(15) NOT NULL UNIQUE,
-  email VARCHAR(100),
-  password VARCHAR(100),
-  PRIMARY KEY(username)
+
+CREATE TABLE USERS (
+    username varchar(255),
+    first varchar(255),
+    last varchar(255),
+    email varchar(255),
+    hashedPassword varchar(255),
+    UserId int NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (UserId)
 );
 
 
-# Create the items table to store the list of available items
+
 CREATE TABLE items (
-   name VARCHAR(255),
-   brand VARCHAR(255),
-   price VARCHAR(255),
-   description TEXT,
-   imagePath VARCHAR(255)
-   PRIMARY KEY(name)
+    name varchar(255),
+    brand varchar(255),
+    price int,
+    image_path varchar(255),
+    UserId int NOT NULL,
+    addedByUserId int,
+    PRIMARY KEY (UserId),
+    FOREIGN KEY (UserId) REFERENCES users(UserId)
 );
 
 
