@@ -192,8 +192,8 @@ module.exports = function(app, shopData) {
         const imagePath = req.file ? req.file.path.replace(/\\/g, '/').replace('public/', '') : null;
         const userId = req.session.userId; 
     
-        let sqlquery = "INSERT INTO items (name, brand, price, image_path, UserId) VALUES (?,?,?,?,?)";
-        let newrecord = [req.body.name, req.body.brand, req.body.price, imagePath, userId];
+        let sqlquery = "INSERT INTO items (name, brand, size, price, image_path, UserId) VALUES (?,?,?,?,?,?)";
+        let newrecord = [req.body.name, req.body.brand, req.body.size, req.body.size, req.body.price, imagePath, userId];
     
         db.query(sqlquery, newrecord, (err, result) => {
             if (err) {
@@ -204,6 +204,7 @@ module.exports = function(app, shopData) {
                 <p>Item added to the database:</p>
                 <p>Name: ${req.body.name}</p>
                 <p>Brand: ${req.body.brand}</p>
+                <p>Size: ${req.body.size}</p>
                 <p>Price: ${req.body.price}</p>
                 <p>Image: ${imagePath ? imagePath : 'No image uploaded'}</p>
                 <form action="/list" method="get">
@@ -251,12 +252,13 @@ module.exports = function(app, shopData) {
     app.post('/addToBasket', function (req, res) {
         const itemName = req.body.name;
         const itemBrand = req.body.brand;
+        const itemSize = req.body.size;
         const itemPrice = parseFloat(req.body.price);
         const itemImage = req.body.image;
         const userId = req.session.userId; // User who added the item to the basket
     
         // Add the selected item to the array and associate it with the user ID
-        selectedItems.push({ name: itemName, brand: itemBrand, price: itemPrice, image: itemImage, addedByUserId: userId });
+        selectedItems.push({ name: itemName, brand: itemBrand, size: itemSize, price: itemPrice, image: itemImage, addedByUserId: userId });
     
         // Update the 'addedByUserId' field in the database for the selected item
         const sqlUpdate = 'UPDATE items SET addedByUserId = ? WHERE name = ? AND brand = ? AND price = ?';

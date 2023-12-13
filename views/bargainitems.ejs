@@ -40,6 +40,7 @@
           <li>
               <h3><%= availableItems[i].name %></h3>
               <p><%= availableItems[i].brand %></p>
+              <p><%= availableItems[i].size %></p>
               <p>£<%= availableItems[i].price %></p>
               <!-- Display image if available -->
               <% if (availableItems[i].image_path) { %>
@@ -50,6 +51,7 @@
               <form method="POST" action="/addToBasket">
                 <input type="hidden" name="name" value="<%= availableItems[i].name %>">
                 <input type="hidden" name="brand" value="<%= availableItems[i].brand %>">
+                <input type="hidden" name="size" value="<%= availableItems[i].size %>">
                 <input type="hidden" name="price" value="<%= availableItems[i].price %>">
                 <input type="hidden" name="image" value="/<%= availableItems[i].image_path %>">
                 <button type="submit">Add to Basket</button>
