@@ -1,7 +1,7 @@
 // Import the modules we need
 const multer = require('multer');
 const path= require('path')
-const upload = multer({ dest: '/images' });
+const upload = multer({ dest: 'public/images' });
 const mysql = require('mysql');
 var express = require ('express')
 var ejs = require('ejs')

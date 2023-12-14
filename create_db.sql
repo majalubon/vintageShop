@@ -15,8 +15,7 @@ DROP TABLE IF EXISTS users;
 
 
 
-CREATE TABLE USERS (
-    username varchar(255),
+CREATE TABLE users (username varchar(255),
     first varchar(255),
     last varchar(255),
     email varchar(255),
