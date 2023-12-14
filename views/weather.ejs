@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <title><%=shopName%></title>
+    <link rel="stylesheet"  type="text/css" href="main.css" />
+  </head>
+  <body>
+    <h1><%=shopName%></h1>
+    <div class="topnav">
+      <a href="/">HOME</a>
+      <a href="about">About <%=shopName%></a>
+      <a href="list">Buy</a>
+      <a href="additem">Sell</a>
+      <a href="bargainitems">Best Deals</a>
+      <a href="weather"> Todays Weather</a>
+      <% if (loggedIn) { %>
+        <a href="/logout">Logout</a>
+      <% } else { %>
+        <a href="/login">Login</a>
+      <% } %>
+      <!-- Search Bar-->
+      <div class="dropdown">
+        <button class="dropbtn">
+          SEARCH
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+          <form action="/search-result" method="get">
+            <input type="text" name="keyword" placeholder="Search..." />
+            <button type="submit">Go</button>
+          </form>
+        </div>
+      </div>
+      <a href="basket">Basket</a>
+  </div>
+  <h2>Get Weather Information</h2>
+  <form action="/weather" method="post">
+    <label for="city">Enter City Name:</label>
+    <input type="text" id="city" name="city" required>
+    <button type="submit" class="registerbtn">Get Weather</button>
+  </form>
+</body>
+</html>

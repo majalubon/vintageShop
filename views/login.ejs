@@ -12,7 +12,7 @@
       <a href="list">Buy</a>
       <a href="additem">Sell</a>
       <a href="bargainitems">Best Deals</a>
-      <a href="listusers"> A list of our users</a>
+      <a href="weather"> Todays Weather</a>
       <% if (loggedIn) { %>
         <a href="/logout">Logout</a>
       <% } else { %>
@@ -39,10 +39,10 @@
     <form method="POST" action="/loggedin">
       <div class="container"></div>
       <label for="username"><b>Username:</b></label>
-      <input id="username" type="text" name="username" value="username" required/>
+      <input id="username" type="text" name="username"  required/>
 
       <label for="passowrd"><b>Password:</b></label>
-        <input id="password" type="password" name="password" value="password" required/>
+        <input id="password" type="password" name="password"  required/>
         
         <button type="submit" value="Register" class="loginbtn">Login</button>
         <div class="container signin">

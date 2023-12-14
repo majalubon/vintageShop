@@ -1,6 +1,11 @@
 const multer = require('multer');
 const path = require('path');
 const session = require('express-session');
+const request = require('request');
+
+const sanitizer = require('express-sanitizer');
+const { body, validationResult } = require('express-validator');
+
 
 
 const imageFilter = function (req, file, cb) {
@@ -29,6 +34,7 @@ let selectedItems = [];
 
 module.exports = function(app, shopData) {
 
+
     function requireLogin(req, res, next) {
         if (req.session.userId) {
             next();
@@ -42,6 +48,40 @@ module.exports = function(app, shopData) {
         saveUninitialized: true
       }));
 
+      app.get('/weather', (req, res) => {
+        const shopDataWithLoggedIn = { ...shopData, loggedIn: req.session.loggedIn };
+        res.render('weather.ejs', shopDataWithLoggedIn);
+    });
+    
+    // Handle the weather form submission
+    app.post('/weather', (req, res) => {
+        const apiKey = '697d17242610b50501f7f3360c501584';
+        const city = req.body.city; // Get the city name from the form
+    
+        if (!city) {
+            return res.status(400).send('City name is required');
+        }
+    
+        const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+    
+        // Make an HTTP request to the OpenWeatherMap API
+        request(apiUrl, { json: true }, (error, response, body) => {
+            if (error) {
+                console.error('Error fetching weather data:', error.message);
+                res.status(500).send('Error fetching weather data');
+            } else {
+                const weatherData = {
+                    description: body.weather[0].description,
+                    temperature: body.main.temp
+                };
+    
+                const shopDataWithLoggedIn = { ...shopData, loggedIn: req.session.loggedIn, weatherData };
+                res.render('chosenweather.ejs', shopDataWithLoggedIn);
+            }
+        });
+    });
+
+    
     app.get('/', function(req, res) {
         const shopDataWithLoggedIn = { ...shopData, loggedIn: req.session.loggedIn };
     
@@ -64,31 +104,49 @@ module.exports = function(app, shopData) {
         const shopDataWithLoggedIn = { ...shopData, loggedIn: req.session.loggedIn };
         res.render("register.ejs", shopDataWithLoggedIn);                                                                     
     });                                                                                                 
-    app.post('/registered', function (req,res) {
+    app.post('/registered', [
+        // Validation rules
+        body('username').notEmpty().trim().escape(),
+        body('first').notEmpty().trim().escape(),
+        body('last').notEmpty().trim().escape(),
+        body('email').isEmail().normalizeEmail(),
+        body('password').notEmpty().trim().escape(),
+    
+    ], (req, res) => {
+        // Check for validation errors
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() });
+        }
+        const sanitizedUsername = req.sanitize(req.body.username);
+        const sanitizedFirst = req.sanitize(req.body.first);
+        const sanitizedLast = req.sanitize(req.body.last);
+        const sanitizedEmail = req.sanitize(req.body.email);
+        const sanitizedPassword = req.sanitize(req.body.password);
+    
+        // Continue with registration logic
         const bcrypt = require('bcrypt');
         const saltRounds = 10;
         const plainPassword = req.body.password;
-        let hashPassword;
-        bcrypt.hash(plainPassword, saltRounds, function(err, hashedPassword) {
+    
+        bcrypt.hash(plainPassword, saltRounds, function (err, hashedPassword) {
             if (err) {
-                res.redirect('./');
+                return res.status(500).send('An error occurred during password hashing.');
             }
-            // Store hashed password in your database.
-            hashPassword=hashedPassword
-            //console.log(hashPassword)
-            let sqlquery = "INSERT INTO users (username, first, last, email, hashedPassword) VALUES (?,?,?,?,?)";
-            let newrecord = [req.body.username, req.body.first, req.body.last, req.body.email, hashPassword];
+    
+            // Store hashed password in the database
+            const sqlquery = "INSERT INTO users (username, first, last, email, hashedPassword) VALUES (?,?,?,?,?)";
+            const newrecord = [req.body.username, req.body.first, req.body.last, req.body.email, hashedPassword];
+    
             db.query(sqlquery, newrecord, (err, result) => {
                 if (err) {
-                    return console.error(err.message);
+                    return res.status(500).send('An error occurred during database insertion.');
                 }
-                else
+    
                 res.redirect('/login');
-                console.log(newrecord)
             });
-        })
-                                                          
-    }); 
+        });
+    });
     app.get('/list', function(req, res) {
         let sqlquery = "SELECT * FROM items"; 
         db.query(sqlquery, (err, result) => {

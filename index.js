@@ -6,20 +6,21 @@ const mysql = require('mysql');
 var express = require ('express')
 var ejs = require('ejs')
 var bodyParser= require ('body-parser')
+const sanitizer = require('express-sanitizer');
+
+
 
 
 // Create the express application object
 const app = express()
 const port = 8001
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json());
+app.use(sanitizer());
 app.use(express.static('public'));
 
-const { body, validationResult } = require('express-validator');
-const sanitizer = require('express-sanitizer');
 
-app.use(sanitizer());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
 
 // Define the database connection
 const db = mysql.createConnection ({
