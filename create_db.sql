@@ -15,28 +15,11 @@ DROP TABLE IF EXISTS users;
 
 
 
-CREATE TABLE users (
-    username varchar(255),
-    first varchar(255),
-    last varchar(255),
-    email varchar(255),
-    hashedPassword varchar(255),
-    UserId int NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY (UserId)
-);
+CREATE TABLE users (username varchar(255),first varchar(255),last varchar(255),email varchar(255),hashedPassword varchar(255),UserId int NOT NULL AUTO_INCREMENT,PRIMARY KEY (UserId));
 
 
 
-CREATE TABLE items (
-    name varchar(255),
-    brand varchar(255),
-    price int,
-    image_path varchar(255),
-    UserId int NOT NULL,
-    addedByUserId int,
-    PRIMARY KEY (UserId),
-    FOREIGN KEY (UserId) REFERENCES users(UserId)
-);
+CREATE TABLE items (id INT PRIMARY KEY AUTO_INCREMENT,name VARCHAR(255) NOT NULL,brand VARCHAR(255) NOT NULL,price INT NOT NULL,image_path VARCHAR(255),UserId INT,addedByUserId INT,FOREIGN KEY (UserId) REFERENCES users(userId),FOREIGN KEY (addedByUserId) REFERENCES users(userId));
 
 
 
