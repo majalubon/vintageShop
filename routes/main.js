@@ -267,7 +267,7 @@ module.exports = function(app, shopData) {
                 <p>Price: ${req.body.price}</p>
                 <p>Image: ${imagePath ? imagePath : 'No image uploaded'}</p>
                 <form action="/list" method="get">
-                    <button type="submit" class='registerbtn'>Confirm</button>
+                    <button type="submit">Confirm</button>
                 </form>
             `);
         });
