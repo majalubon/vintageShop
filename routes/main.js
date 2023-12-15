@@ -192,7 +192,7 @@ module.exports = function(app, shopData) {
                         req.session.userId = rows[0].userId;
     
                         // Redirect to the basket
-                        res.redirect('/basket');
+                        res.redirect('basket');
                     } else {
                         res.status(401).send('Incorrect password.');
                     }
