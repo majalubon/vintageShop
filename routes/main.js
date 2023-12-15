@@ -337,7 +337,7 @@ module.exports = function(app, shopData) {
         selectedItems.splice(itemIndex, 1);
       
         // Redirect back to the basket
-        res.redirect('/basket');
+        res.redirect('basket');
     });
 
     app.post('/makePayment', function (req, res) {
@@ -362,7 +362,7 @@ module.exports = function(app, shopData) {
             });
         } else {
             // If not logged in, redirect to the login page
-            res.redirect('/login');
+            res.redirect('login');
         }
     });
     app.get('/logout', function (req, res) {
