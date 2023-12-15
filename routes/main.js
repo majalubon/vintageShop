@@ -169,7 +169,7 @@ module.exports = function(app, shopData) {
         let username = req.body.username;
         let password = req.body.password;
     
-        // Retrieve the hashed password from the database based on the username
+        // Retrieve the hashed password and userId from the database based on the username
         let sqlquery = 'SELECT userId, hashedPassword FROM users WHERE username=?';
         db.query(sqlquery, [username], function (err, rows) {
             if (err) {
@@ -187,7 +187,7 @@ module.exports = function(app, shopData) {
                         console.error('Error comparing passwords:', err);
                         res.status(500).send('An error occurred while comparing passwords.');
                     } else if (result === true) {
-                        // Set the user as logged in
+                        // Set the user as logged in and store userId in the session
                         req.session.loggedIn = true;
                         req.session.userId = rows[0].userId;
     
