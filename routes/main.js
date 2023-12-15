@@ -143,7 +143,7 @@ module.exports = function(app, shopData) {
                     return res.status(500).send('An error occurred during database insertion.');
                 }
     
-                res.redirect('/login');
+                res.redirect('login');
             });
         });
     });
