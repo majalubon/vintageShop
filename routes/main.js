@@ -304,7 +304,7 @@ module.exports = function(app, shopData) {
             res.render('basket.ejs', { userBasketItems, loggedIn: req.session.loggedIn });
         } else {
             // User is not logged in, redirect to login page
-            res.redirect('/login');
+            res.redirect('login');
         }
     });
     app.post('/addToBasket', function (req, res) {
