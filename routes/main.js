@@ -326,7 +326,7 @@ module.exports = function(app, shopData) {
                 res.status(500).send('An error occurred while updating the addedByUserId.');
             } else {
                 // Redirect back to the item list
-                res.redirect('/list');
+                res.redirect('list');
             }
         });
     });
