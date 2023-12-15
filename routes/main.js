@@ -39,7 +39,7 @@ module.exports = function(app, shopData) {
         if (req.session.userId) {
             next();
         } else {
-            res.redirect('login.ejs');
+            res.render('login.ejs');
         }
     }
     app.use(session({
