@@ -39,7 +39,7 @@ module.exports = function(app, shopData) {
         if (req.session.userId) {
             next();
         } else {
-            res.redirect('usr/367/login');
+            res.redirect('login');
         }
     }
     app.use(session({
